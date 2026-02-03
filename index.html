@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Chore Wheel</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏠%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,27 +24,29 @@
       <label class="theme-switch">
         <input type="checkbox" id="themeToggle" aria-label="Toggle dark mode" />
         <span class="switch-track" aria-hidden="true"></span>
-        <span class="switch-label">Dark mode</span>
+        <span class="switch-label">
+          <span class="switch-icon sun" aria-hidden="true">☀</span>
+          <span class="switch-icon moon" aria-hidden="true">☾</span>
+        </span>
       </label>
     </div>
 
     <section class="summary" aria-live="polite">
       <h2>This week</h2>
       <div class="summary-list" id="summaryList"></div>
-      <p class="note" id="changeNote"></p>
       <button class="preview-button" id="previewButton" type="button">Preview next week</button>
-    </section>
+      <p class="note" id="changeNote"></p>
 
-    <div class="popover hidden" id="previewPopover" role="dialog" aria-modal="false" aria-labelledby="nextWeekTitle">
-      <div class="popover-card">
-        <div class="popover-arrow" aria-hidden="true"></div>
-        <div class="modal-header">
-          <h3 id="nextWeekTitle">Next week</h3>
-          <button class="modal-close" id="modalClose" type="button" aria-label="Close preview">Close</button>
+      <div class="popover hidden" id="previewPopover" role="dialog" aria-modal="false" aria-labelledby="nextWeekTitle">
+        <div class="popover-card">
+          <div class="modal-header">
+            <h3 id="nextWeekTitle">Next week</h3>
+            <button class="modal-close" id="modalClose" type="button" aria-label="Close preview">Close</button>
+          </div>
+          <div class="summary-list" id="nextSummaryList"></div>
         </div>
-        <div class="summary-list" id="nextSummaryList"></div>
       </div>
-    </div>
+    </section>
   </main>
 
   <script src="script.js"></script>

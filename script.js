@@ -8,10 +8,12 @@ const previewButton = document.getElementById('previewButton');
 const previewPopover = document.getElementById('previewPopover');
 const modalClose = document.getElementById('modalClose');
 const themeToggle = document.getElementById('themeToggle');
+const summarySection = document.querySelector('.summary');
 
 const innerChores = ['Kitchen', 'Living Room', 'Bathroom'];
 const weeklyChores = ['Dishwasher', 'Shopping', 'Bins'];
 const orderedNames = ['Advait', 'Michael', 'Euan'];
+const NZ_TIMEZONE = 'Pacific/Auckland';
 
 function parseCsv(text) {
   const lines = text.trim().split('\n');
@@ -31,44 +33,70 @@ function toLocalDate(dateString) {
   return new Date(`${dateString}T00:00:00`);
 }
 
-function formatDate(date) {
+function formatDateInNZ(date) {
   return date.toLocaleDateString(undefined, {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
     year: 'numeric',
+    timeZone: NZ_TIMEZONE,
   });
 }
 
-function toLocalISODate(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+function getDateKeyInNZ(date) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: NZ_TIMEZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+
+  const year = parts.find((part) => part.type === 'year')?.value;
+  const month = parts.find((part) => part.type === 'month')?.value;
+  const day = parts.find((part) => part.type === 'day')?.value;
+
   return `${year}-${month}-${day}`;
 }
 
-function findActiveDate(dates, today) {
-  const sorted = [...dates].sort((a, b) => a - b);
+function dateFromKey(dateKey) {
+  // Use midnight UTC so NZ timezone stays on the intended local date.
+  return new Date(`${dateKey}T00:00:00Z`);
+}
+
+function findActiveDate(dateKeys, todayKey) {
+  const sorted = [...dateKeys].sort();
   const last = sorted[sorted.length - 1];
   const first = sorted[0];
 
   let active = first;
-  for (const date of sorted) {
-    if (date <= today) {
-      active = date;
+  for (const key of sorted) {
+    if (key <= todayKey) {
+      active = key;
     }
   }
 
   return { active, first, last, sorted };
 }
 
-function getNextWednesday(date) {
-  const next = new Date(date);
-  const day = next.getDay();
-  const daysUntilWednesday = (3 - day + 7) % 7 || 7;
-  next.setDate(next.getDate() + daysUntilWednesday);
-  next.setHours(0, 0, 0, 0);
-  return next;
+function getWeekdayIndexInNZ(date) {
+  const weekday = new Intl.DateTimeFormat('en-US', {
+    timeZone: NZ_TIMEZONE,
+    weekday: 'short',
+  }).format(date);
+  const map = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+  return map[weekday];
+}
+
+function getNextWednesdayKey(fromKey) {
+  const base = dateFromKey(fromKey);
+  for (let i = 1; i <= 7; i += 1) {
+    const candidate = new Date(base);
+    candidate.setUTCDate(candidate.getUTCDate() + i);
+    if (getWeekdayIndexInNZ(candidate) === 3) {
+      return getDateKeyInNZ(candidate);
+    }
+  }
+  return fromKey;
 }
 
 function formatAssignments(row) {
@@ -116,22 +144,31 @@ function renderSummary(target, lines) {
     }
     target.appendChild(item);
   });
+
+  const items = target.querySelectorAll('.summary-item');
+  items.forEach((item, index) => {
+    item.style.animationDelay = `${index * 80}ms`;
+    requestAnimationFrame(() => {
+      item.classList.add('reveal');
+    });
+  });
 }
 
 function setWeekChip() {
-  weekChip.textContent = formatDate(new Date());
+  weekChip.textContent = formatDateInNZ(new Date());
 }
 
 function positionPopover() {
   const buttonRect = previewButton.getBoundingClientRect();
-  const pageTop = window.scrollY;
-  const pageLeft = window.scrollX;
+  const summaryRect = summarySection.getBoundingClientRect();
+  const popoverRect = previewPopover.getBoundingClientRect();
+  const popoverWidth = popoverRect.width || previewPopover.offsetWidth;
+  const popoverHeight = popoverRect.height || previewPopover.offsetHeight;
 
-  const top = buttonRect.bottom + 12 + pageTop;
-  const left = Math.min(
-    pageLeft + buttonRect.left,
-    pageLeft + window.innerWidth - previewPopover.offsetWidth - 16
-  );
+  const top = buttonRect.top - summaryRect.top - popoverHeight - 12;
+  const preferredLeft = buttonRect.left - summaryRect.left;
+  const maxLeft = summaryRect.width - popoverWidth - 16;
+  const left = Math.min(Math.max(preferredLeft, 16), Math.max(maxLeft, 16));
 
   previewPopover.style.top = `${top}px`;
   previewPopover.style.left = `${left}px`;
@@ -140,6 +177,7 @@ function positionPopover() {
 function openPopover() {
   previewPopover.classList.remove('hidden');
   positionPopover();
+  requestAnimationFrame(positionPopover);
 }
 
 function closePopover() {
@@ -204,24 +242,21 @@ async function init() {
     const text = await response.text();
     const rows = parseCsv(text);
 
-    const dates = [...new Set(rows.map((row) => row.date))].map(toLocalDate);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const dateKeys = [...new Set(rows.map((row) => row.date))];
+    const todayKey = getDateKeyInNZ(new Date());
 
-    const { active, first, last, sorted } = findActiveDate(dates, today);
-    const activeKey = toLocalISODate(active);
-    const activeRow = rows.find((row) => row.date === activeKey);
+    const { active, first, last } = findActiveDate(dateKeys, todayKey);
+    const activeRow = rows.find((row) => row.date === active);
 
     if (!activeRow) throw new Error('No assignments for the current week.');
 
     setWeekChip();
     renderSummary(summaryList, formatAssignments(activeRow));
 
-    const nextWednesday = getNextWednesday(active);
-    changeNote.textContent = `Chores change on ${formatDate(nextWednesday)}`;
+    const nextWednesdayKey = getNextWednesdayKey(active);
+    changeNote.textContent = `Chores change on ${formatDateInNZ(dateFromKey(nextWednesdayKey))}`;
 
-    const nextKey = toLocalISODate(nextWednesday);
-    const nextRow = rows.find((row) => row.date === nextKey);
+    const nextRow = rows.find((row) => row.date === nextWednesdayKey);
 
     if (nextRow) {
       renderSummary(nextSummaryList, formatAssignments(nextRow));
@@ -232,10 +267,10 @@ async function init() {
     setupThemeToggle();
     setupModal();
 
-    if (today < first) {
-      changeNote.textContent = `Chores change on ${formatDate(getNextWednesday(first))}`;
-    } else if (today > last) {
-      changeNote.textContent = `Chores change on ${formatDate(getNextWednesday(last))}`;
+    if (todayKey < first) {
+      changeNote.textContent = `Chores change on ${formatDateInNZ(dateFromKey(getNextWednesdayKey(first)))}`;
+    } else if (todayKey > last) {
+      changeNote.textContent = `Chores change on ${formatDateInNZ(dateFromKey(getNextWednesdayKey(last)))}`;
     }
   } catch (error) {
     weekChip.textContent = 'Unable to load chores.';
