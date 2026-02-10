@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v3';
 const STATIC_CACHE = `chore-wheel-static-${CACHE_VERSION}`;
 const DATA_CACHE = `chore-wheel-data-${CACHE_VERSION}`;
 
