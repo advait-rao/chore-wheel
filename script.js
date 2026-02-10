@@ -15,6 +15,16 @@ const weeklyChores = ['Dishwasher', 'Shopping', 'Bins'];
 const orderedNames = ['Advait', 'Michael', 'Euan'];
 const NZ_TIMEZONE = 'Pacific/Auckland';
 
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch((error) => {
+      console.error('Service worker registration failed:', error);
+    });
+  });
+}
+
 function parseCsv(text) {
   const lines = text.trim().split('\n');
   const headers = lines.shift().split(',');
@@ -284,3 +294,4 @@ async function init() {
 }
 
 init();
+registerServiceWorker();
