@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const STATIC_CACHE = `chore-wheel-static-${CACHE_VERSION}`;
 const DATA_CACHE = `chore-wheel-data-${CACHE_VERSION}`;
 
@@ -32,6 +32,23 @@ self.addEventListener('activate', (event) => {
     )).then(() => self.clients.claim())
   );
 });
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+function isCriticalRequest(request, url) {
+  return (
+    request.mode === 'navigate' ||
+    request.destination === 'script' ||
+    request.destination === 'style' ||
+    url.pathname.endsWith('/index.html') ||
+    url.pathname.endsWith('/manifest.webmanifest') ||
+    url.pathname.endsWith('/chores.csv')
+  );
+}
 
 async function networkFirst(request, cacheName) {
   const cache = await caches.open(cacheName);
@@ -73,13 +90,13 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (request.mode === 'navigate') {
-    event.respondWith(networkFirst(request, STATIC_CACHE));
+  if (url.pathname.endsWith('/chores.csv')) {
+    event.respondWith(networkFirst(request, DATA_CACHE));
     return;
   }
 
-  if (url.pathname.endsWith('/chores.csv')) {
-    event.respondWith(networkFirst(request, DATA_CACHE));
+  if (isCriticalRequest(request, url)) {
+    event.respondWith(networkFirst(request, STATIC_CACHE));
     return;
   }
 
