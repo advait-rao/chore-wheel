@@ -594,6 +594,8 @@ h1 {
 
 .sentence-slot {
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 
 .inline-select-field {
@@ -624,6 +626,8 @@ h1 {
 
 .inline-time-field {
   position: relative;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .inline-time-field::after {
@@ -642,10 +646,14 @@ h1 {
 }
 
 .inline-time-field input[type="time"] {
+  display: block;
+  appearance: none;
+  -webkit-appearance: none;
   width: 100%;
   height: 44px;
   min-height: 44px;
   min-width: 0;
+  max-width: 100%;
   padding: 0 34px 0 12px;
   line-height: 1.2;
   font-size: 1rem;
@@ -892,8 +900,10 @@ h1 {
   }
 
   .sentence-line {
-    grid-template-columns: 88px minmax(0, 1fr);
-    gap: 8px;
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 6px;
+    width: 100%;
+    overflow: hidden;
   }
 
   .sentence-token {
