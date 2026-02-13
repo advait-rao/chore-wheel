@@ -655,17 +655,28 @@ h1 {
   min-width: 0;
   max-width: 100%;
   padding: 0 34px 0 12px;
-  line-height: 1.2;
+  line-height: 44px;
   font-size: 1rem;
   font-variant-numeric: tabular-nums;
 }
 
 .inline-time-field input[type="time"]::-webkit-date-and-time-value {
   text-align: left;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .inline-time-field input[type="time"]::-webkit-datetime-edit {
+  display: flex;
+  align-items: center;
+  height: 44px;
   padding: 0;
+}
+
+.inline-time-field input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  display: flex;
+  align-items: center;
 }
 
 .inline-time-field input[type="time"]::-webkit-datetime-edit-ampm-field {
