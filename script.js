@@ -11,15 +11,20 @@ const themeToggle = document.getElementById('themeToggle');
 const summarySection = document.querySelector('.summary');
 
 const reminderForm = document.getElementById('reminderForm');
+const reminderFlatmate = document.getElementById('reminderFlatmate');
 const reminderChore = document.getElementById('reminderChore');
 const reminderWeekday = document.getElementById('reminderWeekday');
 const reminderTime = document.getElementById('reminderTime');
 const reminderEveryOccurrence = document.getElementById('reminderEveryOccurrence');
-const reminderOutput = document.getElementById('reminderOutput');
+const reminderEveryOccurrenceLabel = document.getElementById('reminderEveryOccurrenceLabel');
+const generateReminderButton = document.getElementById('generateReminderButton');
+const reminderPopover = document.getElementById('reminderPopover');
+const reminderPopoverClose = document.getElementById('reminderPopoverClose');
+const reminderPanel = document.querySelector('.reminder-panel');
 const reminderResult = document.getElementById('reminderResult');
 const reminderStatus = document.getElementById('reminderStatus');
 const addToCalendarButton = document.getElementById('addToCalendarButton');
-const downloadIcsLink = document.getElementById('downloadIcsLink');
+const downloadIcsButton = document.getElementById('downloadIcsButton');
 
 const innerChores = ['Kitchen', 'Living Room', 'Bathroom'];
 const weeklyChores = ['Dishwasher', 'Shopping', 'Bins'];
@@ -299,6 +304,24 @@ function setupThemeToggle() {
   });
 }
 
+function animateReminderPanel() {
+  const animationTargets = Array.from(
+    reminderPanel.querySelectorAll('[data-reminder-animate]'),
+  );
+
+  animationTargets.forEach((target) => {
+    target.classList.remove('reveal');
+    target.style.animationDelay = '0ms';
+  });
+
+  requestAnimationFrame(() => {
+    animationTargets.forEach((target, index) => {
+      target.style.animationDelay = `${index * 80}ms`;
+      target.classList.add('reveal');
+    });
+  });
+}
+
 function initTabs() {
   const tabButtons = Array.from(document.querySelectorAll('[data-tab-target]'));
   const panels = Array.from(document.querySelectorAll('[data-tab-panel]'));
@@ -319,6 +342,14 @@ function initTabs() {
     if (targetId !== 'panelChores') {
       closePopover();
     }
+
+    if (targetId !== 'panelReminder') {
+      closeReminderPopover();
+    }
+
+    if (targetId === 'panelReminder') {
+      animateReminderPanel();
+    }
   }
 
   tabButtons.forEach((button) => {
@@ -330,6 +361,10 @@ function initTabs() {
 
 function validateReminderForm(values) {
   const errors = [];
+
+  if (!orderedNames.includes(values.flatmate)) {
+    errors.push('Select a valid flatmate.');
+  }
 
   if (!allChores.includes(values.chore)) {
     errors.push('Select a valid chore.');
@@ -349,6 +384,14 @@ function validateReminderForm(values) {
   };
 }
 
+function updateEveryOccurrenceLabel() {
+  reminderEveryOccurrenceLabel.textContent = 'Remind on each occurence';
+}
+
+function updateGenerateReminderButtonState() {
+  generateReminderButton.disabled = !orderedNames.includes(reminderFlatmate.value);
+}
+
 function computeReminderDatesFromSchedule(rows, values) {
   const weekdayIndex = weekdayOrder.indexOf(values.weekday);
   const timeMinutes = Number(values.time.slice(0, 2)) * 60 + Number(values.time.slice(3, 5));
@@ -358,7 +401,7 @@ function computeReminderDatesFromSchedule(rows, values) {
   const occurrences = [];
 
   for (const row of rows) {
-    if (!row[values.chore]) continue;
+    if (row[values.chore] !== values.flatmate) continue;
 
     const weekStart = dateFromKey(row.date);
     const weekStartWeekday = weekStart.getUTCDay();
@@ -372,6 +415,9 @@ function computeReminderDatesFromSchedule(rows, values) {
       occurrences.push({
         dateKey: reminderDateKey,
         time: values.time,
+        flatmate: values.flatmate,
+        chore: values.chore,
+        rubbishType: row['Rubbish Type'] || '',
       });
     }
 
@@ -401,36 +447,96 @@ function toIcsStamp(date = new Date()) {
   return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 }
 
-function buildReminderIcs(chore, reminderDates, everyOccurrence) {
+function foldIcsLine(line) {
+  const maxLength = 74;
+  if (line.length <= maxLength) {
+    return [line];
+  }
+
+  const folded = [];
+  let remaining = line;
+  folded.push(remaining.slice(0, maxLength));
+  remaining = remaining.slice(maxLength);
+
+  while (remaining.length > maxLength - 1) {
+    folded.push(` ${remaining.slice(0, maxLength - 1)}`);
+    remaining = remaining.slice(maxLength - 1);
+  }
+
+  if (remaining.length) {
+    folded.push(` ${remaining}`);
+  }
+
+  return folded;
+}
+
+function serializeIcsLines(lines) {
+  return lines.flatMap((line) => foldIcsLine(line)).join('\r\n');
+}
+
+function buildReminderIcs(values, reminderDates) {
   if (!reminderDates.length) {
     throw new Error('No reminder dates to include in ICS file.');
   }
 
-  const first = reminderDates[0];
-  const summary = `Chore reminder: ${chore}`;
-  const description = `Reminder generated by Chore Wheel for ${chore}.`;
-  const uid = `chore-wheel-${Date.now()}-${Math.random().toString(36).slice(2)}@local`;
+  const normalizedDates = [...reminderDates].sort((a, b) => a.dateKey.localeCompare(b.dateKey));
+  const firstOccurrence = normalizedDates[0];
+  const isRecurringSeries = values.everyOccurrence && normalizedDates.length > 1;
+  const isBinsSeries = values.chore === 'Bins';
+  const choreLabel = isBinsSeries && !isRecurringSeries
+    ? `Bins (${firstOccurrence.rubbishType || 'Unknown'})`
+    : values.chore;
+  const summary = `Chore reminder: ${values.flatmate} on ${choreLabel}`;
+  const uid = `chore-roster-${values.flatmate.toLowerCase()}-${values.chore.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}@local`;
+
+  const descriptionParts = [
+    `Reminder generated by Chore Roster for ${values.flatmate}.`,
+    `Chore: ${choreLabel}.`,
+  ];
+
+  if (isBinsSeries && !isRecurringSeries) {
+    const firstType = firstOccurrence.rubbishType || 'Unknown';
+    descriptionParts.push(`Rubbish type for first occurrence: ${firstType}.`);
+  } else if (isBinsSeries && isRecurringSeries) {
+    descriptionParts.push('Rubbish type varies by occurrence and is included in each occurrence title.');
+  }
 
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Chore Wheel//Reminder//EN',
+    'PRODID:-//Chore Roster//Reminder//EN',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',
     `UID:${uid}`,
     `DTSTAMP:${toIcsStamp()}`,
     `SUMMARY:${escapeIcsText(summary)}`,
-    `DESCRIPTION:${escapeIcsText(description)}`,
-    `DTSTART;TZID=${NZ_TIMEZONE}:${toIcsDateTime(first.dateKey, first.time)}`,
+    `DESCRIPTION:${escapeIcsText(descriptionParts.join(' '))}`,
+    `DTSTART;TZID=${NZ_TIMEZONE}:${toIcsDateTime(firstOccurrence.dateKey, firstOccurrence.time)}`,
   ];
 
-  if (everyOccurrence && reminderDates.length > 1) {
-    const extraDates = reminderDates
-      .slice(1)
-      .map((dateItem) => toIcsDateTime(dateItem.dateKey, dateItem.time))
-      .join(',');
-    lines.push(`RDATE;TZID=${NZ_TIMEZONE}:${extraDates}`);
+  if (isRecurringSeries) {
+    const desiredDateKeys = new Set(normalizedDates.map((dateItem) => dateItem.dateKey));
+    const firstDateKey = normalizedDates[0].dateKey;
+    const lastDateKey = normalizedDates[normalizedDates.length - 1].dateKey;
+    const excludedDateTimes = [];
+
+    let weeklySlotCount = 1;
+    let cursorDateKey = firstDateKey;
+
+    while (cursorDateKey < lastDateKey) {
+      cursorDateKey = addDaysToDateKey(cursorDateKey, 7);
+      weeklySlotCount += 1;
+
+      if (!desiredDateKeys.has(cursorDateKey)) {
+        excludedDateTimes.push(toIcsDateTime(cursorDateKey, values.time));
+      }
+    }
+
+    lines.push(`RRULE:FREQ=WEEKLY;COUNT=${weeklySlotCount}`);
+    excludedDateTimes.forEach((excludedDateTime) => {
+      lines.push(`EXDATE;TZID=${NZ_TIMEZONE}:${excludedDateTime}`);
+    });
   }
 
   lines.push(
@@ -440,11 +546,36 @@ function buildReminderIcs(chore, reminderDates, everyOccurrence) {
     `DESCRIPTION:${escapeIcsText(summary)}`,
     'END:VALARM',
     'END:VEVENT',
-    'END:VCALENDAR',
-    '',
   );
 
-  return lines.join('\r\n');
+  if (isBinsSeries && isRecurringSeries) {
+    normalizedDates.forEach((dateItem) => {
+      const occurrenceType = dateItem.rubbishType || 'Unknown';
+      const occurrenceSummary = `Chore reminder: ${values.flatmate} on Bins (${occurrenceType})`;
+      const occurrenceDescription = `Reminder generated by Chore Roster for ${values.flatmate}. Chore: Bins (${occurrenceType}).`;
+      const occurrenceDateTime = toIcsDateTime(dateItem.dateKey, dateItem.time);
+
+      lines.push(
+        'BEGIN:VEVENT',
+        `UID:${uid}`,
+        `DTSTAMP:${toIcsStamp()}`,
+        `RECURRENCE-ID;TZID=${NZ_TIMEZONE}:${occurrenceDateTime}`,
+        `DTSTART;TZID=${NZ_TIMEZONE}:${occurrenceDateTime}`,
+        `SUMMARY:${escapeIcsText(occurrenceSummary)}`,
+        `DESCRIPTION:${escapeIcsText(occurrenceDescription)}`,
+        'BEGIN:VALARM',
+        'TRIGGER:PT0M',
+        'ACTION:DISPLAY',
+        `DESCRIPTION:${escapeIcsText(occurrenceSummary)}`,
+        'END:VALARM',
+        'END:VEVENT',
+      );
+    });
+  }
+
+  lines.push('END:VCALENDAR', '');
+
+  return `${serializeIcsLines(lines)}\r\n`;
 }
 
 async function openOrDownloadIcs(icsContent, fileName, mode = 'open') {
@@ -462,24 +593,6 @@ async function openOrDownloadIcs(icsContent, fileName, mode = 'open') {
     downloadLink.click();
     setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
     return objectUrl;
-  }
-
-  if (navigator.share && typeof File !== 'undefined') {
-    const file = new File([blob], fileName, { type: 'text/calendar' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      try {
-        await navigator.share({
-          files: [file],
-          title: 'Chore reminder',
-        });
-        URL.revokeObjectURL(objectUrl);
-        return objectUrl;
-      } catch (error) {
-        if (error?.name !== 'AbortError') {
-          console.warn('Share sheet was unavailable, falling back to direct open.', error);
-        }
-      }
-    }
   }
 
   const openLink = document.createElement('a');
@@ -500,13 +613,58 @@ function formatReminderDisplay(dateItem) {
   return `${dateLabel} ${hour12}:${minute} ${meridian}`;
 }
 
+function positionReminderPopover() {
+  const buttonRect = generateReminderButton.getBoundingClientRect();
+  const panelRect = reminderPanel.getBoundingClientRect();
+  const popoverRect = reminderPopover.getBoundingClientRect();
+  const popoverWidth = popoverRect.width || reminderPopover.offsetWidth;
+  const popoverHeight = popoverRect.height || reminderPopover.offsetHeight;
+
+  const preferredTop = buttonRect.bottom - panelRect.top + 10;
+  const maxTop = panelRect.height - popoverHeight - 12;
+  const top = Math.max(12, Math.min(preferredTop, maxTop));
+
+  const preferredLeft = buttonRect.left - panelRect.left;
+  const maxLeft = panelRect.width - popoverWidth - 12;
+  const left = Math.min(Math.max(preferredLeft, 12), Math.max(maxLeft, 12));
+
+  reminderPopover.style.top = `${top}px`;
+  reminderPopover.style.left = `${left}px`;
+}
+
+function openReminderPopover() {
+  reminderPopover.classList.remove('hidden');
+  positionReminderPopover();
+  requestAnimationFrame(positionReminderPopover);
+}
+
+function closeReminderPopover() {
+  reminderPopover.classList.add('hidden');
+}
+
+function setupReminderPopover() {
+  reminderPopoverClose.addEventListener('click', closeReminderPopover);
+
+  document.addEventListener('click', (event) => {
+    if (reminderPopover.classList.contains('hidden')) return;
+
+    const clickedInsidePopover = reminderPopover.contains(event.target);
+    const clickedTrigger = event.target === generateReminderButton;
+    if (!clickedInsidePopover && !clickedTrigger) {
+      closeReminderPopover();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (!reminderPopover.classList.contains('hidden')) {
+      positionReminderPopover();
+    }
+  });
+}
+
 function clearGeneratedReminder() {
-  if (generatedReminder?.downloadUrl) {
-    URL.revokeObjectURL(generatedReminder.downloadUrl);
-  }
   generatedReminder = null;
-  reminderOutput.classList.add('hidden');
-  downloadIcsLink.removeAttribute('href');
+  closeReminderPopover();
 }
 
 function setReminderStatus(message) {
@@ -514,6 +672,21 @@ function setReminderStatus(message) {
 }
 
 function initReminderFeature(rows) {
+  reminderFlatmate.innerHTML = '';
+  const placeholderOption = document.createElement('option');
+  placeholderOption.value = '';
+  placeholderOption.textContent = 'flatmate';
+  placeholderOption.disabled = true;
+  placeholderOption.selected = true;
+  reminderFlatmate.appendChild(placeholderOption);
+
+  orderedNames.forEach((name) => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    reminderFlatmate.appendChild(option);
+  });
+
   reminderChore.innerHTML = '';
   allChores.forEach((chore) => {
     const option = document.createElement('option');
@@ -522,13 +695,23 @@ function initReminderFeature(rows) {
     reminderChore.appendChild(option);
   });
 
+  reminderFlatmate.value = '';
+  reminderChore.value = 'Bins';
   reminderWeekday.value = 'Tuesday';
   reminderTime.value = '20:00';
+  updateEveryOccurrenceLabel();
+  updateGenerateReminderButtonState();
+
+  reminderFlatmate.addEventListener('change', () => {
+    updateEveryOccurrenceLabel();
+    updateGenerateReminderButtonState();
+  });
 
   reminderForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const values = {
+      flatmate: reminderFlatmate.value,
       chore: reminderChore.value,
       weekday: reminderWeekday.value,
       time: reminderTime.value,
@@ -549,30 +732,32 @@ function initReminderFeature(rows) {
       return;
     }
 
-    const icsContent = buildReminderIcs(values.chore, reminderDates, values.everyOccurrence);
+    const icsContent = buildReminderIcs(values, reminderDates);
+    const sanitizedFlatmate = values.flatmate.toLowerCase().replace(/\s+/g, '-');
     const sanitizedChore = values.chore.toLowerCase().replace(/\s+/g, '-');
-    const fileName = `${sanitizedChore}-reminder.ics`;
-    const downloadUrl = await openOrDownloadIcs(icsContent, fileName, 'url');
+    const fileName = `${sanitizedFlatmate}-${sanitizedChore}-reminder.ics`;
 
     clearGeneratedReminder();
     generatedReminder = {
       icsContent,
       fileName,
-      downloadUrl,
       reminderDates,
+      flatmate: values.flatmate,
       everyOccurrence: values.everyOccurrence,
+      chore: values.chore,
     };
 
     const firstOccurrence = formatReminderDisplay(reminderDates[0]);
+    const firstChoreLabel = values.chore === 'Bins'
+      ? `Bins (${reminderDates[0].rubbishType || 'Unknown'})`
+      : values.chore;
     const occurrenceLabel = values.everyOccurrence
-      ? `${reminderDates.length} reminders ready. First reminder: ${firstOccurrence}.`
-      : `1 reminder ready for ${firstOccurrence}.`;
+      ? `${reminderDates.length} reminders ready for ${values.flatmate} on ${values.chore}. First reminder: ${values.flatmate} on ${firstChoreLabel} at ${firstOccurrence}.`
+      : `1 reminder ready for ${values.flatmate} on ${firstChoreLabel} at ${firstOccurrence}.`;
 
     reminderResult.textContent = occurrenceLabel;
-    reminderOutput.classList.remove('hidden');
-    downloadIcsLink.href = downloadUrl;
-    downloadIcsLink.download = fileName;
-    setReminderStatus('Reminder file generated. Tap Add to calendar to import.');
+    openReminderPopover();
+    setReminderStatus('');
   });
 
   addToCalendarButton.addEventListener('click', async () => {
@@ -583,17 +768,30 @@ function initReminderFeature(rows) {
 
     try {
       await openOrDownloadIcs(generatedReminder.icsContent, generatedReminder.fileName, 'open');
-      setReminderStatus('Calendar import opened. Use Download invite if your browser blocks the import.');
+      setReminderStatus('Calendar import opened. Use the download button if your browser blocks the import.');
     } catch (error) {
-      setReminderStatus('Could not open calendar import. Use Download invite (.ics) instead.');
+      setReminderStatus('Could not open calendar import. Use the download button instead.');
+      console.error(error);
+    }
+  });
+
+  downloadIcsButton.addEventListener('click', async () => {
+    if (!generatedReminder) {
+      setReminderStatus('Generate a reminder first.');
+      return;
+    }
+
+    try {
+      await openOrDownloadIcs(generatedReminder.icsContent, generatedReminder.fileName, 'download');
+      setReminderStatus('Invite downloaded.');
+    } catch (error) {
+      setReminderStatus('Download failed. Try Generate reminder again.');
       console.error(error);
     }
   });
 
   window.addEventListener('beforeunload', () => {
-    if (generatedReminder?.downloadUrl) {
-      URL.revokeObjectURL(generatedReminder.downloadUrl);
-    }
+    generatedReminder = null;
   });
 }
 
@@ -635,6 +833,7 @@ async function init() {
 
     setupThemeToggle();
     setupModal();
+    setupReminderPopover();
     initTabs();
     initReminderFeature(scheduleRows);
   } catch (error) {

@@ -1,6 +1,6 @@
 {
-  "name": "Chore Wheel",
-  "short_name": "Chores",
+  "name": "Chore Roster",
+  "short_name": "Chore Roster",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
@@ -32,13 +32,13 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Chore Wheel dashboard in landscape"
+      "label": "Chore Roster dashboard in landscape"
     },
     {
       "src": "screenshots/screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
-      "label": "Chore Wheel dashboard on mobile"
+      "label": "Chore Roster dashboard on mobile"
     }
   ]
 }

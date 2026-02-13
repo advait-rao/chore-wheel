@@ -1,6 +1,6 @@
-const CACHE_VERSION = 'v4';
-const STATIC_CACHE = `chore-wheel-static-${CACHE_VERSION}`;
-const DATA_CACHE = `chore-wheel-data-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v5';
+const STATIC_CACHE = `chore-roster-static-${CACHE_VERSION}`;
+const DATA_CACHE = `chore-roster-data-${CACHE_VERSION}`;
 
 const APP_SHELL = [
   './',
