@@ -607,6 +607,7 @@ h1 {
 .sentence-slot select,
 .sentence-slot input[type="time"] {
   min-height: 44px;
+  height: 44px;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.95);
@@ -891,19 +892,12 @@ h1 {
   }
 
   .sentence-line {
-    gap: 6px;
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 8px;
   }
 
   .sentence-token {
     font-size: 0.95rem;
-  }
-
-  .sentence-line-primary {
-    grid-template-columns: auto minmax(0, 0.9fr) auto minmax(0, 1.1fr);
-  }
-
-  .sentence-line-secondary {
-    grid-template-columns: auto minmax(0, 0.85fr) auto minmax(0, 1.15fr);
   }
 
   .sentence-slot select,
