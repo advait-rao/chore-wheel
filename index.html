@@ -36,21 +36,93 @@
       </label>
     </div>
 
-    <section class="summary" aria-live="polite">
-      <h2>This week</h2>
-      <div class="summary-list" id="summaryList"></div>
-      <button class="preview-button" id="previewButton" type="button">Preview next week</button>
-      <p class="note" id="changeNote"></p>
+    <nav class="tabs" aria-label="Sections">
+      <button
+        class="tab-button is-active"
+        id="tabChores"
+        type="button"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panelChores"
+        data-tab-target="panelChores"
+      >
+        Chores
+      </button>
+      <button
+        class="tab-button"
+        id="tabReminder"
+        type="button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panelReminder"
+        data-tab-target="panelReminder"
+      >
+        Add a reminder
+      </button>
+    </nav>
 
-      <div class="popover hidden" id="previewPopover" role="dialog" aria-modal="false" aria-labelledby="nextWeekTitle">
-        <div class="popover-card">
-          <div class="modal-header">
-            <h3 id="nextWeekTitle">Next week</h3>
-            <button class="modal-close" id="modalClose" type="button" aria-label="Close preview">Close</button>
+    <section class="tab-panel is-active" id="panelChores" role="tabpanel" aria-labelledby="tabChores" data-tab-panel>
+      <section class="summary" aria-live="polite">
+        <h2>This week</h2>
+        <div class="summary-list" id="summaryList"></div>
+        <button class="preview-button" id="previewButton" type="button">Preview next week</button>
+        <p class="note" id="changeNote"></p>
+
+        <div class="popover hidden" id="previewPopover" role="dialog" aria-modal="false" aria-labelledby="nextWeekTitle">
+          <div class="popover-card">
+            <div class="modal-header">
+              <h3 id="nextWeekTitle">Next week</h3>
+              <button class="modal-close" id="modalClose" type="button" aria-label="Close preview">Close</button>
+            </div>
+            <div class="summary-list" id="nextSummaryList"></div>
           </div>
-          <div class="summary-list" id="nextSummaryList"></div>
         </div>
-      </div>
+      </section>
+    </section>
+
+    <section class="tab-panel" id="panelReminder" role="tabpanel" aria-labelledby="tabReminder" data-tab-panel hidden>
+      <section class="summary reminder-panel">
+        <h2>Create a reminder</h2>
+        <form id="reminderForm" class="reminder-form" novalidate>
+          <label class="form-field">
+            <span>Chore</span>
+            <select id="reminderChore" name="chore" required></select>
+          </label>
+
+          <label class="form-field">
+            <span>Reminder day of week</span>
+            <select id="reminderWeekday" name="weekday" required>
+              <option value="Monday">Monday</option>
+              <option value="Tuesday">Tuesday</option>
+              <option value="Wednesday">Wednesday</option>
+              <option value="Thursday">Thursday</option>
+              <option value="Friday">Friday</option>
+              <option value="Saturday">Saturday</option>
+              <option value="Sunday">Sunday</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span>Reminder time</span>
+            <input id="reminderTime" name="time" type="time" required />
+          </label>
+
+          <label class="checkbox-field">
+            <input id="reminderEveryOccurrence" name="everyOccurrence" type="checkbox" />
+            <span>Remind me of every occurrence of this chore</span>
+          </label>
+
+          <button class="preview-button generate-button" id="generateReminderButton" type="submit">Generate reminder</button>
+        </form>
+
+        <div class="reminder-output hidden" id="reminderOutput">
+          <p class="note" id="reminderResult"></p>
+          <button class="preview-button action-button" id="addToCalendarButton" type="button">Add to calendar</button>
+          <a class="preview-button secondary-link" id="downloadIcsLink" href="#" download>Download invite (.ics)</a>
+        </div>
+
+        <p class="note" id="reminderStatus" aria-live="polite"></p>
+      </section>
     </section>
   </main>
 
