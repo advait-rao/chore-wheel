@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test Cricket 6000 Club | Immersive 3D Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./cricket-immersive.css" />
+</head>
+<body>
+  <div id="vizRoot" aria-label="3D cricket visualization"></div>
+
+  <div class="scan-lines" aria-hidden="true"></div>
+  <div class="radial-glow" aria-hidden="true"></div>
+
+  <header class="hud hud-top">
+    <div class="title-wrap">
+      <p class="kicker">Immersive Analytics Arena</p>
+      <h1>Test Cricket 6000+ Run Club</h1>
+      <p class="subtitle">X: Debut Year, Y: Strike Rate, Z: Career Duration (last year - debut year). Pre-1990 points are marked as incomplete SR-era data.</p>
+    </div>
+    <div class="controls">
+      <button class="hud-btn is-active" data-filter="all" type="button">All</button>
+      <button class="hud-btn" data-filter="modern" type="button">1990+</button>
+      <button class="hud-btn" data-filter="legacy" type="button">Pre-1990</button>
+      <button class="hud-btn hud-btn-tour" id="tourBtn" type="button">Start Tour</button>
+    </div>
+  </header>
+
+  <aside class="hud hud-panel" id="playerPanel">
+    <p class="panel-kicker">Player Focus</p>
+    <h2 id="playerName">Click a player orb</h2>
+    <p id="playerSummary">Hover or click any point to inspect player details.</p>
+    <dl class="stats-grid">
+      <div><dt>Test Span</dt><dd id="statDebut">-</dd></div>
+      <div><dt>Strike Rate</dt><dd id="statSR">-</dd></div>
+      <div><dt>Career Span</dt><dd id="statCareer">-</dd></div>
+      <div><dt>Era Flag</dt><dd id="statEra">-</dd></div>
+    </dl>
+    <p class="panel-note">Keyboard: W/A/S/D to strafe, Q/E to rise/drop, drag to orbit, scroll to zoom.</p>
+  </aside>
+
+  <div class="hud hud-badge" id="hudBadge">Loading dataset...</div>
+  <div class="hud hud-hover" id="hoverTag" hidden></div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"
+      }
+    }
+  </script>
+  <script type="module" src="./cricket-immersive.js"></script>
+</body>
+</html>

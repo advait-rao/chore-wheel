@@ -1,0 +1,336 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="760" viewBox="0 0 1180 760">
+<rect x="0" y="0" width="100%" height="100%" fill="#ffffff"/>
+<line x1="90" y1="645.0" x2="1140" y2="645.0" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="649.0" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">33</text>
+<line x1="90" y1="589.7" x2="1140" y2="589.7" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="593.7" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">38</text>
+<line x1="90" y1="534.4" x2="1140" y2="534.4" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="538.4" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">43</text>
+<line x1="90" y1="479.1" x2="1140" y2="479.1" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="483.1" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">48</text>
+<line x1="90" y1="423.8" x2="1140" y2="423.8" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="427.8" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">53</text>
+<line x1="90" y1="368.6" x2="1140" y2="368.6" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="372.6" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">58</text>
+<line x1="90" y1="313.3" x2="1140" y2="313.3" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="317.3" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">63</text>
+<line x1="90" y1="258.0" x2="1140" y2="258.0" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="262.0" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">68</text>
+<line x1="90" y1="202.7" x2="1140" y2="202.7" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="206.7" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">73</text>
+<line x1="90" y1="147.4" x2="1140" y2="147.4" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="151.4" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">78</text>
+<line x1="90" y1="92.1" x2="1140" y2="92.1" stroke="#e8edf3" stroke-width="1"/>
+<text x="78" y="96.1" text-anchor="end" font-size="12" fill="#4b5563" font-family="Arial">83</text>
+<line x1="138.3" y1="70" x2="138.3" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="138.3" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1930</text>
+<line x1="198.6" y1="70" x2="198.6" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="198.6" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1935</text>
+<line x1="259.0" y1="70" x2="259.0" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="259.0" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1940</text>
+<line x1="319.3" y1="70" x2="319.3" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="319.3" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1945</text>
+<line x1="379.7" y1="70" x2="379.7" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="379.7" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1950</text>
+<line x1="440.0" y1="70" x2="440.0" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="440.0" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1955</text>
+<line x1="500.3" y1="70" x2="500.3" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="500.3" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1960</text>
+<line x1="560.7" y1="70" x2="560.7" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="560.7" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1965</text>
+<line x1="621.0" y1="70" x2="621.0" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="621.0" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1970</text>
+<line x1="681.4" y1="70" x2="681.4" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="681.4" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1975</text>
+<line x1="741.7" y1="70" x2="741.7" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="741.7" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1980</text>
+<line x1="802.1" y1="70" x2="802.1" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="802.1" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1985</text>
+<line x1="862.4" y1="70" x2="862.4" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="862.4" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1990</text>
+<line x1="922.8" y1="70" x2="922.8" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="922.8" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">1995</text>
+<line x1="983.1" y1="70" x2="983.1" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="983.1" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">2000</text>
+<line x1="1043.4" y1="70" x2="1043.4" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="1043.4" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">2005</text>
+<line x1="1103.8" y1="70" x2="1103.8" y2="645" stroke="#f1f5f9" stroke-width="1"/>
+<text x="1103.8" y="669" text-anchor="middle" font-size="12" fill="#4b5563" font-family="Arial">2010</text>
+<line x1="90" y1="645" x2="1140" y2="645" stroke="#334155" stroke-width="1.5"/>
+<line x1="90" y1="70" x2="90" y2="645" stroke="#334155" stroke-width="1.5"/>
+<circle cx="922.8" cy="501.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="922.8" cy="360.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="983.1" cy="410.7" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="934.8" cy="539.8" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="983.1" cy="433.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="862.4" cy="340.8" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="946.9" cy="441.0" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1055.5" cy="490.7" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1103.8" cy="441.1" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1103.8" cy="417.9" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1127.9" cy="385.3" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="910.7" cy="345.3" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="910.7" cy="531.0" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1115.9" cy="395.5" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1031.4" cy="391.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1031.4" cy="457.4" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1007.2" cy="350.1" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1115.9" cy="233.8" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="886.6" cy="412.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="959.0" cy="430.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="995.2" cy="100.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1043.4" cy="327.4" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="898.6" cy="410.4" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1031.4" cy="407.1" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1031.4" cy="463.0" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="898.6" cy="529.7" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1031.4" cy="469.1" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="874.5" cy="431.9" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1043.4" cy="455.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1103.8" cy="519.4" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1103.8" cy="546.3" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1067.6" cy="354.3" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="934.8" cy="464.0" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1127.9" cy="439.5" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="898.6" cy="502.5" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="934.8" cy="443.2" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="1091.7" cy="473.5" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="983.1" cy="343.6" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="862.4" cy="471.8" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<circle cx="850.3" cy="412.3" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="633.1" cy="530.6" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="802.1" cy="472.1" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="114.1" cy="361.9" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="717.6" cy="555.5" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="427.9" cy="417.4" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="621.0" cy="440.1" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="669.3" cy="238.4" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="693.4" cy="501.4" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="102.1" cy="588.9" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="790.0" cy="370.5" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="427.9" cy="595.8" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="548.6" cy="615.3" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="355.5" cy="526.2" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="790.0" cy="557.0" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="440.0" cy="540.8" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="790.0" cy="445.5" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="681.4" cy="465.5" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="222.8" cy="574.9" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="572.8" cy="383.2" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="669.3" cy="462.7" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="850.3" cy="551.2" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="717.6" cy="518.8" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="717.6" cy="450.5" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="693.4" cy="550.3" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="850.3" cy="595.4" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<circle cx="464.1" cy="480.6" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<line x1="102.1" y1="588.9" x2="110.1" y2="580.9" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="110.1" y="580.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">WR Hammond</text>
+<text x="110.1" y="580.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">WR Hammond</text>
+<line x1="114.1" y1="361.9" x2="122.1" y2="353.9" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="122.1" y="353.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DG Bradman </text>
+<text x="122.1" y="353.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DG Bradman </text>
+<line x1="222.8" y1="574.9" x2="230.8" y2="566.9" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="230.8" y="566.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">L Hutton</text>
+<text x="230.8" y="566.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">L Hutton</text>
+<line x1="355.5" y1="526.2" x2="363.5" y2="518.2" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="363.5" y="518.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">RN Harvey</text>
+<text x="363.5" y="518.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">RN Harvey</text>
+<line x1="427.9" y1="595.8" x2="435.9" y2="587.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="435.9" y="587.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">MC Cowdrey</text>
+<text x="435.9" y="587.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">MC Cowdrey</text>
+<line x1="427.9" y1="417.4" x2="435.9" y2="409.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="435.9" y="409.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">GS Sobers</text>
+<text x="435.9" y="409.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">GS Sobers</text>
+<line x1="440.0" y1="540.8" x2="448.0" y2="532.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="448.0" y="532.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">KF Barrington</text>
+<text x="448.0" y="532.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">KF Barrington</text>
+<line x1="464.1" y1="480.6" x2="472.1" y2="472.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="472.1" y="472.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">RB Kanhai</text>
+<text x="472.1" y="472.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">RB Kanhai</text>
+<line x1="548.6" y1="615.3" x2="556.6" y2="607.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="556.6" y="607.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">G Boycott </text>
+<text x="556.6" y="607.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">G Boycott </text>
+<line x1="572.8" y1="383.2" x2="580.8" y2="375.2" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="580.8" y="375.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">CH Lloyd </text>
+<text x="580.8" y="375.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">CH Lloyd </text>
+<line x1="621.0" y1="440.1" x2="629.0" y2="432.1" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="629.0" y="432.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">GS Chappell </text>
+<text x="629.0" y="432.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">GS Chappell </text>
+<line x1="633.1" y1="530.6" x2="641.1" y2="522.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="641.1" y="522.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">SM Gavaskar</text>
+<text x="641.1" y="522.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">SM Gavaskar</text>
+<line x1="669.3" y1="462.7" x2="677.3" y2="454.7" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="677.3" y="454.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">CG Greenidge </text>
+<text x="677.3" y="454.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">CG Greenidge </text>
+<line x1="669.3" y1="238.4" x2="677.3" y2="230.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="677.3" y="230.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">IVA Richards </text>
+<text x="677.3" y="230.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">IVA Richards </text>
+<line x1="681.4" y1="465.5" x2="689.4" y2="457.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="689.4" y="457.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">GA Gooch</text>
+<text x="689.4" y="457.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">GA Gooch</text>
+<line x1="693.4" y1="550.3" x2="701.4" y2="542.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="701.4" y="542.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DB Vengsarkar </text>
+<text x="701.4" y="542.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DB Vengsarkar </text>
+<line x1="693.4" y1="501.4" x2="701.4" y2="493.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="701.4" y="493.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">Javed Miandad </text>
+<text x="701.4" y="493.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">Javed Miandad </text>
+<line x1="717.6" y1="555.5" x2="725.6" y2="547.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="725.6" y="547.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">AR Border </text>
+<text x="725.6" y="547.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">AR Border </text>
+<line x1="717.6" y1="518.8" x2="725.6" y2="510.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="725.6" y="510.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DL Haynes</text>
+<text x="725.6" y="510.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DL Haynes</text>
+<line x1="717.6" y1="450.5" x2="725.6" y2="442.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="725.6" y="442.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DI Gower</text>
+<text x="725.6" y="442.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DI Gower</text>
+<line x1="790.0" y1="557.0" x2="798.0" y2="549.0" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="798.0" y="549.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DC Boon</text>
+<text x="798.0" y="549.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DC Boon</text>
+<line x1="790.0" y1="445.5" x2="798.0" y2="437.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="798.0" y="437.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">PA de Silva </text>
+<text x="798.0" y="437.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">PA de Silva </text>
+<line x1="790.0" y1="370.5" x2="798.0" y2="362.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="798.0" y="362.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">M Azharuddin </text>
+<text x="798.0" y="362.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">M Azharuddin </text>
+<line x1="802.1" y1="472.1" x2="810.1" y2="464.1" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="810.1" y="464.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">SR Waugh </text>
+<text x="810.1" y="464.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">SR Waugh </text>
+<line x1="850.3" y1="595.4" x2="858.3" y2="587.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="858.3" y="587.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">MA Atherton </text>
+<text x="858.3" y="587.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">MA Atherton </text>
+<line x1="850.3" y1="551.2" x2="858.3" y2="543.2" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="858.3" y="543.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">MA Taylor</text>
+<text x="858.3" y="543.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">MA Taylor</text>
+<line x1="850.3" y1="412.3" x2="858.3" y2="404.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="858.3" y="404.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">SR Tendulkar</text>
+<text x="858.3" y="404.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">SR Tendulkar</text>
+<line x1="862.4" y1="471.8" x2="870.4" y2="463.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="870.4" y="463.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">AJ Stewart</text>
+<text x="870.4" y="463.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">AJ Stewart</text>
+<line x1="862.4" y1="340.8" x2="870.4" y2="332.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="870.4" y="332.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">BC Lara</text>
+<text x="870.4" y="332.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">BC Lara</text>
+<line x1="874.5" y1="431.9" x2="882.5" y2="423.9" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="882.5" y="423.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">ME Waugh </text>
+<text x="882.5" y="423.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">ME Waugh </text>
+<line x1="886.6" y1="412.6" x2="894.6" y2="404.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="894.6" y="404.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">Inzamam-ul-Haq</text>
+<text x="894.6" y="404.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">Inzamam-ul-Haq</text>
+<line x1="898.6" y1="529.7" x2="906.6" y2="521.7" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="906.6" y="521.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">G Kirsten</text>
+<text x="906.6" y="521.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">G Kirsten</text>
+<line x1="898.6" y1="502.5" x2="906.6" y2="494.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="906.6" y="494.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">GP Thorpe</text>
+<text x="906.6" y="494.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">GP Thorpe</text>
+<line x1="898.6" y1="410.4" x2="906.6" y2="402.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="906.6" y="402.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">JL Langer </text>
+<text x="906.6" y="402.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">JL Langer </text>
+<line x1="910.7" y1="531.0" x2="918.7" y2="523.0" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="918.7" y="523.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">S Chanderpaul</text>
+<text x="918.7" y="523.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">S Chanderpaul</text>
+<line x1="910.7" y1="345.3" x2="918.7" y2="337.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="918.7" y="337.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">ML Hayden </text>
+<text x="918.7" y="337.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">ML Hayden </text>
+<line x1="922.8" y1="501.6" x2="930.8" y2="493.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="930.8" y="493.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">JH Kallis</text>
+<text x="930.8" y="493.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">JH Kallis</text>
+<line x1="922.8" y1="360.6" x2="930.8" y2="352.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="930.8" y="352.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">RT Ponting</text>
+<text x="930.8" y="352.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">RT Ponting</text>
+<line x1="934.8" y1="539.8" x2="942.8" y2="531.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="942.8" y="531.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">R Dravid</text>
+<text x="942.8" y="531.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">R Dravid</text>
+<line x1="934.8" y1="464.0" x2="942.8" y2="456.0" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="942.8" y="456.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">VVS Laxman </text>
+<text x="942.8" y="456.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">VVS Laxman </text>
+<line x1="934.8" y1="443.2" x2="942.8" y2="435.2" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="942.8" y="435.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">SC Ganguly </text>
+<text x="942.8" y="435.2" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">SC Ganguly </text>
+<line x1="946.9" y1="441.0" x2="954.9" y2="433.0" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="954.9" y="433.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DPMD Jayawardene </text>
+<text x="954.9" y="433.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DPMD Jayawardene </text>
+<line x1="959.0" y1="430.6" x2="967.0" y2="422.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="967.0" y="422.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">Mohammad Yousuf </text>
+<text x="967.0" y="422.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">Mohammad Yousuf </text>
+<line x1="983.1" y1="433.6" x2="991.1" y2="425.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="991.1" y="425.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">Younis Khan</text>
+<text x="991.1" y="425.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">Younis Khan</text>
+<line x1="983.1" y1="410.7" x2="991.1" y2="402.7" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="991.1" y="402.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">KC Sangakkara</text>
+<text x="991.1" y="402.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">KC Sangakkara</text>
+<line x1="983.1" y1="343.6" x2="991.1" y2="335.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="991.1" y="335.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">CH Gayle</text>
+<text x="991.1" y="335.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">CH Gayle</text>
+<line x1="995.2" y1="100.6" x2="1003.2" y2="92.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1003.2" y="92.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">V Sehwag </text>
+<text x="1003.2" y="92.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">V Sehwag </text>
+<line x1="1007.2" y1="350.1" x2="1015.2" y2="342.1" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1015.2" y="342.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">GC Smith</text>
+<text x="1015.2" y="342.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">GC Smith</text>
+<line x1="1031.4" y1="469.1" x2="1039.4" y2="461.1" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1039.4" y="461.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">AJ Strauss</text>
+<text x="1039.4" y="461.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">AJ Strauss</text>
+<line x1="1031.4" y1="463.0" x2="1039.4" y2="455.0" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1039.4" y="455.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">IR Bell </text>
+<text x="1039.4" y="455.0" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">IR Bell </text>
+<line x1="1031.4" y1="457.4" x2="1039.4" y2="468.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1039.4" y="468.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">HM Amla </text>
+<text x="1039.4" y="468.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">HM Amla </text>
+<line x1="1031.4" y1="407.1" x2="1039.4" y2="399.1" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1039.4" y="399.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">AB de Villiers</text>
+<text x="1039.4" y="399.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">AB de Villiers</text>
+<line x1="1031.4" y1="391.6" x2="1039.4" y2="383.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1039.4" y="383.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">MJ Clarke </text>
+<text x="1039.4" y="383.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">MJ Clarke </text>
+<line x1="1043.4" y1="455.6" x2="1051.4" y2="447.6" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1051.4" y="447.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">MEK Hussey</text>
+<text x="1051.4" y="447.6" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">MEK Hussey</text>
+<line x1="1043.4" y1="327.4" x2="1051.4" y2="319.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1051.4" y="319.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">KP Pietersen </text>
+<text x="1051.4" y="319.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">KP Pietersen </text>
+<line x1="1055.5" y1="490.7" x2="1063.5" y2="482.7" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1063.5" y="482.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">AN Cook</text>
+<text x="1063.5" y="482.7" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">AN Cook</text>
+<line x1="1067.6" y1="354.3" x2="1075.6" y2="346.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1075.6" y="346.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">LRPL Taylor </text>
+<text x="1075.6" y="346.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">LRPL Taylor </text>
+<line x1="1091.7" y1="473.5" x2="1099.7" y2="465.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1099.7" y="465.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">AD Mathews </text>
+<text x="1099.7" y="465.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">AD Mathews </text>
+<line x1="1103.8" y1="546.3" x2="1111.8" y2="538.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1111.8" y="538.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">Azhar Ali </text>
+<text x="1111.8" y="538.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">Azhar Ali </text>
+<line x1="1103.8" y1="519.4" x2="1111.8" y2="511.4" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1111.8" y="511.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">CA Pujara </text>
+<text x="1111.8" y="511.4" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">CA Pujara </text>
+<line x1="1103.8" y1="441.1" x2="1111.8" y2="433.1" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1111.8" y="433.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">KS Williamson</text>
+<text x="1111.8" y="433.1" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">KS Williamson</text>
+<line x1="1103.8" y1="417.9" x2="1111.8" y2="409.9" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1111.8" y="409.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">SPD Smith</text>
+<text x="1111.8" y="409.9" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">SPD Smith</text>
+<line x1="1115.9" y1="395.5" x2="1123.9" y2="387.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1123.9" y="387.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">V Kohli</text>
+<text x="1123.9" y="387.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">V Kohli</text>
+<line x1="1115.9" y1="233.8" x2="1123.9" y2="225.8" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1123.9" y="225.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">DA Warner</text>
+<text x="1123.9" y="225.8" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">DA Warner</text>
+<line x1="1127.9" y1="439.5" x2="1135.9" y2="431.5" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1135.9" y="431.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">FDM Karunaratne </text>
+<text x="1135.9" y="431.5" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">FDM Karunaratne </text>
+<line x1="1127.9" y1="385.3" x2="1135.9" y2="377.3" stroke="#94a3b8" stroke-width="0.8" opacity="0.7"/>
+<text x="1135.9" y="377.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#ffffff" stroke="#ffffff" stroke-width="2.5" paint-order="stroke">JE Root </text>
+<text x="1135.9" y="377.3" text-anchor="start" font-size="9.5" font-family="Arial" fill="#111827">JE Root </text>
+<line x1="862.4" y1="436.0" x2="1127.9" y2="408.6" stroke="#1f77b4" stroke-width="2" stroke-dasharray="7 5" opacity="0.75"/>
+<text x="90" y="34" font-size="24" font-family="Arial" font-weight="700" fill="#111827">Test 6000+ Run Club: Strike Rate vs Debut Year</text>
+<text x="90" y="55" font-size="13" font-family="Arial" fill="#475569">Pre-1990 players shown separately because ball-by-ball strike-rate coverage is incomplete in older records.</text>
+<text x="615.0" y="725" text-anchor="middle" font-size="14" font-family="Arial" fill="#111827">Debut Year</text>
+<text x="24" y="357.5" text-anchor="middle" font-size="14" font-family="Arial" fill="#111827" transform="rotate(-90 24 357.5)">Career Strike Rate</text>
+<rect x="775" y="78" width="338" height="64" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+<circle cx="793" cy="100" r="5.5" fill="#1f77b4" fill-opacity="0.78"/>
+<text x="809" y="104" font-size="12.5" font-family="Arial" fill="#1f2937">Debut in/after 1990</text>
+<circle cx="793" cy="124" r="6" fill="none" stroke="#d95f02" stroke-width="1.8"/>
+<text x="809" y="128" font-size="12.5" font-family="Arial" fill="#1f2937">Debut before 1990 (SR may be incomplete)</text>
+<text x="590.0" y="750" text-anchor="middle" font-size="11.5" font-family="Arial" fill="#6b7280">Source: TestCricket_Records.csv snapshot (March 2024, ESPN Statsguru-derived table).</text>
+</svg>
