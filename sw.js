@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v6';
+const CACHE_VERSION = 'v7';
 const STATIC_CACHE = `chore-roster-static-${CACHE_VERSION}`;
 const DATA_CACHE = `chore-roster-data-${CACHE_VERSION}`;
 

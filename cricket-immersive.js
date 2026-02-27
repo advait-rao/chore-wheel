@@ -6,7 +6,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { gsap } from "gsap";
 
-const DATA_PATH = "./test_cricket_records.csv";
+const DATA_PATH = "./test_cricket_records.csv?v=20260227-1";
 
 const dom = {
   vizRoot: document.getElementById("vizRoot"),
@@ -40,7 +40,7 @@ const state = {
   touring: false,
   tourTimer: null,
   focusTween: null,
-  volumeVisible: true,
+  volumeVisible: false,
   volumeAxes: { x: true, y: false, z: false },
   volumeSceneObjects: [],
   occlusionCheckAccumulator: 0,
