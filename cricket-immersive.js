@@ -13,6 +13,13 @@ const dom = {
   hoverTag: document.getElementById("hoverTag"),
   hudBadge: document.getElementById("hudBadge"),
   tourBtn: document.getElementById("tourBtn"),
+  searchForm: document.getElementById("searchForm"),
+  searchInput: document.getElementById("searchInput"),
+  searchChip: document.getElementById("searchChip"),
+  searchChipText: document.getElementById("searchChipText"),
+  searchChipClear: document.getElementById("searchChipClear"),
+  volumeBtn: document.getElementById("volumeBtn"),
+  volumeAxisButtons: Array.from(document.querySelectorAll("[data-volume-axis]")),
   playerName: document.getElementById("playerName"),
   playerSummary: document.getElementById("playerSummary"),
   statDebut: document.getElementById("statDebut"),
@@ -33,15 +40,26 @@ const state = {
   touring: false,
   tourTimer: null,
   focusTween: null,
+  volumeVisible: true,
+  volumeAxes: { x: true, y: false, z: false },
+  volumeSceneObjects: [],
+  occlusionCheckAccumulator: 0,
+  isolatedPoint: null,
+  singleClickTimer: null,
+  searchQuery: "",
 };
 
 const bounds = {
   yearMin: 0,
   yearMax: 0,
+  lastYearMin: 0,
+  lastYearMax: 0,
+  calendarYearMin: 0,
+  calendarYearMax: 0,
+  runsMin: 0,
+  runsMax: 0,
   srMin: 0,
   srMax: 0,
-  durationMin: 0,
-  durationMax: 0,
 };
 
 let scene;
@@ -53,6 +71,11 @@ let labelRenderer;
 let raycaster;
 let mouse;
 let clock;
+const occlusionRaycaster = new THREE.Raycaster();
+const cameraWorldPos = new THREE.Vector3();
+const pointWorldPos = new THREE.Vector3();
+const rayDirection = new THREE.Vector3();
+const projectedPoint = new THREE.Vector3();
 
 const WORLD = {
   xMin: -250,
@@ -61,6 +84,18 @@ const WORLD = {
   yMax: 245,
   zMin: -170,
   zMax: 170,
+};
+
+const VOLUME_THICKNESS = {
+  x: 6.5,
+  y: 10,
+  z: 6.5,
+};
+
+const AXIS_LABEL_PAD = {
+  x: 32,
+  y: 36,
+  z: 24,
 };
 
 init().catch((error) => {
@@ -80,7 +115,10 @@ async function init() {
   buildArena();
   buildPoints(state.players);
   wireUi();
+  setVolumeVisibility(state.volumeVisible);
+  syncSearchUi();
   applyFilter("all");
+  updatePointOcclusionVisibility(true);
   flyInCamera();
   animate();
 }
@@ -180,10 +218,14 @@ function parseSpanYears(spanText) {
 function calculateBounds(players) {
   bounds.yearMin = Math.min(...players.map((p) => p.debutYear)) - 1;
   bounds.yearMax = Math.max(...players.map((p) => p.debutYear)) + 1;
+  bounds.lastYearMin = Math.min(...players.map((p) => p.lastYear)) - 1;
+  bounds.lastYearMax = Math.max(...players.map((p) => p.lastYear)) + 1;
+  bounds.calendarYearMin = Math.min(bounds.yearMin, bounds.lastYearMin);
+  bounds.calendarYearMax = Math.max(bounds.yearMax, bounds.lastYearMax);
+  bounds.runsMin = Math.floor(Math.min(...players.map((p) => p.runs)) / 1000) * 1000;
+  bounds.runsMax = Math.ceil(Math.max(...players.map((p) => p.runs)) / 1000) * 1000;
   bounds.srMin = Math.floor(Math.min(...players.map((p) => p.strikeRate)) / 5) * 5;
   bounds.srMax = Math.ceil(Math.max(...players.map((p) => p.strikeRate)) / 5) * 5;
-  bounds.durationMin = Math.min(...players.map((p) => p.careerDurationYears));
-  bounds.durationMax = Math.max(...players.map((p) => p.careerDurationYears));
 }
 
 function mapRange(value, inMin, inMax, outMin, outMax) {
@@ -194,9 +236,9 @@ function mapRange(value, inMin, inMax, outMin, outMax) {
 
 function toWorldPosition(player) {
   return new THREE.Vector3(
-    mapRange(player.debutYear, bounds.yearMin, bounds.yearMax, WORLD.xMin, WORLD.xMax),
-    mapRange(player.strikeRate, bounds.srMin, bounds.srMax, WORLD.yMin, WORLD.yMax),
-    mapRange(player.careerDurationYears, bounds.durationMin, bounds.durationMax, WORLD.zMin, WORLD.zMax),
+    mapRange(player.lastYear, bounds.calendarYearMin, bounds.calendarYearMax, WORLD.xMax, WORLD.xMin),
+    mapRange(player.runs, bounds.runsMin, bounds.runsMax, WORLD.yMin, WORLD.yMax),
+    mapRange(player.strikeRate, bounds.srMin, bounds.srMax, WORLD.zMin, WORLD.zMax),
   );
 }
 
@@ -229,7 +271,8 @@ function setupScene() {
   controls.dampingFactor = 0.06;
   controls.maxDistance = 920;
   controls.minDistance = 95;
-  controls.maxPolarAngle = Math.PI * 0.47;
+  controls.minPolarAngle = 0.01;
+  controls.maxPolarAngle = Math.PI - 0.01;
   controls.target.set(0, 90, 0);
 
   composer = new EffectComposer(renderer);
@@ -255,6 +298,7 @@ function setupScene() {
   renderer.domElement.addEventListener("pointermove", onPointerMove);
   renderer.domElement.addEventListener("pointerleave", onPointerLeave);
   renderer.domElement.addEventListener("click", onPointerClick);
+  renderer.domElement.addEventListener("dblclick", onPointerDoubleClick);
   renderer.domElement.addEventListener("pointerdown", () => stopTour());
 }
 
@@ -330,30 +374,148 @@ function buildArena() {
     0x56def4,
   );
 
-  for (let year = Math.ceil(bounds.yearMin / 5) * 5; year <= bounds.yearMax; year += 5) {
-    const x = mapRange(year, bounds.yearMin, bounds.yearMax, WORLD.xMin, WORLD.xMax);
-    addTick(new THREE.Vector3(x, 0.01, WORLD.zMin), 0x215a75);
-    addAxisLabel(`${year}`, new THREE.Vector3(x, 2.2, WORLD.zMin - 8), "axis-label");
-  }
-  for (let sr = bounds.srMin; sr <= bounds.srMax; sr += 5) {
-    const y = mapRange(sr, bounds.srMin, bounds.srMax, WORLD.yMin, WORLD.yMax);
-    addTick(new THREE.Vector3(WORLD.xMin - 4.8, y, WORLD.zMin), 0x1f5e7d, true);
-    addAxisLabel(`${sr}`, new THREE.Vector3(WORLD.xMin - 12, y, WORLD.zMin), "axis-label");
-  }
-  const durationRange = bounds.durationMax - bounds.durationMin;
-  const durationStep = durationRange <= 12 ? 2 : 5;
+  // Transparent bounding volume so the chart reads as a true 3D data block.
+  const cubeWidth = WORLD.xMax - WORLD.xMin;
+  const cubeHeight = WORLD.yMax - 0.01;
+  const cubeDepth = WORLD.zMax - WORLD.zMin;
+  const cubeGeometry = new THREE.BoxGeometry(cubeWidth, cubeHeight, cubeDepth);
+  const cubeCenter = new THREE.Vector3(
+    (WORLD.xMin + WORLD.xMax) / 2,
+    cubeHeight / 2,
+    (WORLD.zMin + WORLD.zMax) / 2,
+  );
+  const cube = new THREE.Mesh(
+    cubeGeometry,
+    new THREE.MeshBasicMaterial({
+      color: 0x123447,
+      transparent: true,
+      opacity: 0.06,
+      side: THREE.BackSide,
+      depthWrite: false,
+    }),
+  );
+  cube.position.copy(cubeCenter);
+  scene.add(cube);
+  state.volumeSceneObjects.push({ obj: cube, kind: "cube" });
+
+  const cubeEdges = new THREE.LineSegments(
+    new THREE.EdgesGeometry(cubeGeometry),
+    new THREE.LineBasicMaterial({
+      color: 0x2a6f8d,
+      transparent: true,
+      opacity: 0.22,
+    }),
+  );
+  cubeEdges.position.copy(cubeCenter);
+  scene.add(cubeEdges);
+  state.volumeSceneObjects.push({ obj: cubeEdges, kind: "cube" });
+
+  const yearRange = bounds.calendarYearMax - bounds.calendarYearMin;
+  const yearStep = yearRange <= 16 ? 2 : 5;
   for (
-    let years = Math.ceil(bounds.durationMin / durationStep) * durationStep;
-    years <= bounds.durationMax;
-    years += durationStep
+    let year = Math.ceil(bounds.calendarYearMin / yearStep) * yearStep;
+    year <= bounds.calendarYearMax;
+    year += yearStep
   ) {
-    const z = mapRange(years, bounds.durationMin, bounds.durationMax, WORLD.zMin, WORLD.zMax);
-    addTick(new THREE.Vector3(WORLD.xMin, 0.01, z), 0x1f5e7d, true);
-    addAxisLabel(`${years}y`, new THREE.Vector3(WORLD.xMin - 12, 2.2, z), "axis-label");
+    const x = mapRange(year, bounds.calendarYearMin, bounds.calendarYearMax, WORLD.xMax, WORLD.xMin);
+    addTick(new THREE.Vector3(x, 0.01, WORLD.zMin), 0x215a75);
+    addAxisLabel(`${year}`, new THREE.Vector3(x, 7, WORLD.zMin - AXIS_LABEL_PAD.x), "axis-label");
+    addAxisLabel(`${year}`, new THREE.Vector3(x, 7, WORLD.zMax + AXIS_LABEL_PAD.x), "axis-label");
+
+    const yearsSlice = new THREE.Mesh(
+      new THREE.PlaneGeometry(WORLD.zMax - WORLD.zMin, WORLD.yMax - WORLD.yMin),
+      new THREE.MeshBasicMaterial({
+        color: 0x1f5e7d,
+        transparent: true,
+        opacity: 0.028,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      }),
+    );
+    yearsSlice.position.set(x, (WORLD.yMin + WORLD.yMax) / 2, (WORLD.zMin + WORLD.zMax) / 2);
+    yearsSlice.rotation.y = Math.PI / 2;
+    scene.add(yearsSlice);
+    state.volumeSceneObjects.push({ obj: yearsSlice, kind: "slice", axis: "x" });
   }
-  addAxisLabel("Debut Year", new THREE.Vector3(0, 2.2, WORLD.zMin - 22), "axis-label");
-  addAxisLabel("Strike Rate", new THREE.Vector3(WORLD.xMin - 26, WORLD.yMax + 4, WORLD.zMin), "axis-label");
-  addAxisLabel("Career Duration", new THREE.Vector3(WORLD.xMin - 2, 2.2, WORLD.zMax + 16), "axis-label");
+  const runsRange = bounds.runsMax - bounds.runsMin;
+  const runsStep = runsRange <= 6000 ? 1000 : 2000;
+  for (
+    let runs = Math.ceil(bounds.runsMin / runsStep) * runsStep;
+    runs <= bounds.runsMax;
+    runs += runsStep
+  ) {
+    const y = mapRange(runs, bounds.runsMin, bounds.runsMax, WORLD.yMin, WORLD.yMax);
+    addTick(new THREE.Vector3(WORLD.xMin - 4.8, y, WORLD.zMin), 0x1f5e7d, true);
+    addAxisLabel(
+      `${Math.round(runs / 1000)}k`,
+      new THREE.Vector3(WORLD.xMin - AXIS_LABEL_PAD.y, y, WORLD.zMin - AXIS_LABEL_PAD.z),
+      "axis-label",
+    );
+
+    const runsSlice = new THREE.Mesh(
+      new THREE.PlaneGeometry(WORLD.xMax - WORLD.xMin, WORLD.zMax - WORLD.zMin),
+      new THREE.MeshBasicMaterial({
+        color: 0x225f75,
+        transparent: true,
+        opacity: 0.026,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      }),
+    );
+    runsSlice.position.set((WORLD.xMin + WORLD.xMax) / 2, y, (WORLD.zMin + WORLD.zMax) / 2);
+    runsSlice.rotation.x = Math.PI / 2;
+    scene.add(runsSlice);
+    state.volumeSceneObjects.push({ obj: runsSlice, kind: "slice", axis: "y" });
+  }
+  for (
+    let sr = Math.ceil(bounds.srMin / 5) * 5;
+    sr <= bounds.srMax;
+    sr += 5
+  ) {
+    const z = mapRange(sr, bounds.srMin, bounds.srMax, WORLD.zMin, WORLD.zMax);
+    addTick(new THREE.Vector3(WORLD.xMin, 0.01, z), 0x1f5e7d, true);
+    addAxisLabel(`${sr}`, new THREE.Vector3(WORLD.xMax + AXIS_LABEL_PAD.z, 7, z), "axis-label");
+    addAxisLabel(`${sr}`, new THREE.Vector3(WORLD.xMin - AXIS_LABEL_PAD.y, 7, z), "axis-label");
+
+    const srSlice = new THREE.Mesh(
+      new THREE.PlaneGeometry(WORLD.xMax - WORLD.xMin, WORLD.yMax - WORLD.yMin),
+      new THREE.MeshBasicMaterial({
+        color: 0x1f5e7d,
+        transparent: true,
+        opacity: 0.032,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      }),
+    );
+    srSlice.position.set((WORLD.xMin + WORLD.xMax) / 2, (WORLD.yMin + WORLD.yMax) / 2, z);
+    scene.add(srSlice);
+    state.volumeSceneObjects.push({ obj: srSlice, kind: "slice", axis: "z" });
+  }
+  addAxisLabel(
+    "YEARS ACTIVE",
+    new THREE.Vector3((WORLD.xMin + WORLD.xMax) / 2, -10, WORLD.zMin - AXIS_LABEL_PAD.x - 16),
+    "axis-label axis-title",
+  );
+  addAxisLabel(
+    "YEARS ACTIVE",
+    new THREE.Vector3((WORLD.xMin + WORLD.xMax) / 2, -10, WORLD.zMax + AXIS_LABEL_PAD.x + 16),
+    "axis-label axis-title",
+  );
+  addAxisLabel(
+    "RUNS",
+    new THREE.Vector3(WORLD.xMin - AXIS_LABEL_PAD.y - 16, WORLD.yMax + 10, WORLD.zMin - AXIS_LABEL_PAD.z),
+    "axis-label axis-title",
+  );
+  addAxisLabel(
+    "STRIKE RATE",
+    new THREE.Vector3(WORLD.xMax + AXIS_LABEL_PAD.z + 18, -10, (WORLD.zMin + WORLD.zMax) / 2),
+    "axis-label axis-title",
+  );
+  addAxisLabel(
+    "STRIKE RATE",
+    new THREE.Vector3(WORLD.xMin - AXIS_LABEL_PAD.y - 18, -10, (WORLD.zMin + WORLD.zMax) / 2),
+    "axis-label axis-title",
+  );
 }
 
 function addAxis(start, end, color) {
@@ -404,6 +566,31 @@ function buildPoints(players) {
     const world = toWorldPosition(player);
     const group = new THREE.Group();
     group.position.set(world.x, 0, world.z);
+
+    const volumeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    const volume = new THREE.Mesh(
+      volumeGeometry,
+      new THREE.MeshStandardMaterial({
+        color: player.legacy ? 0xae6b1d : 0x1f6f84,
+        emissive: player.legacy ? 0x40250d : 0x103b45,
+        emissiveIntensity: 0.62,
+        roughness: 0.5,
+        metalness: 0.34,
+        transparent: false,
+        opacity: 1,
+      }),
+    );
+    group.add(volume);
+
+    const volumeEdges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(volumeGeometry),
+      new THREE.LineBasicMaterial({
+        color: player.legacy ? 0xffc16b : 0x8aefff,
+        transparent: false,
+        opacity: 1,
+      }),
+    );
+    group.add(volumeEdges);
 
     const pillar = new THREE.Mesh(
       new THREE.CylinderGeometry(1.15, 1.15, world.y, 10),
@@ -459,10 +646,132 @@ function buildPoints(players) {
 
     scene.add(group);
 
-    const point = { player, group, orb, ring, pillar, labelEl, labelObj, world };
+    const point = {
+      player,
+      group,
+      orb,
+      ring,
+      pillar,
+      volume,
+      volumeEdges,
+      labelEl,
+      labelObj,
+      world,
+    };
+    updatePointVolumeGeometry(point);
     state.points.push(point);
     state.pickables.push(orb);
   });
+}
+
+function getActiveVolumeAxisCount() {
+  return (state.volumeAxes.x ? 1 : 0) + (state.volumeAxes.y ? 1 : 0) + (state.volumeAxes.z ? 1 : 0);
+}
+
+function getActiveVolumeAxisLabels() {
+  return ["x", "y", "z"].filter((axis) => state.volumeAxes[axis]).map((axis) => axis.toUpperCase());
+}
+
+function ensureIntervalSize(start, end, minSize, anchorToEnd = false) {
+  let a = start;
+  let b = end;
+  if (b < a) {
+    a = end;
+    b = start;
+  }
+  const size = b - a;
+  if (size >= minSize) {
+    return { start: a, end: b };
+  }
+  if (anchorToEnd) {
+    return { start: b - minSize, end: b };
+  }
+  const mid = (a + b) / 2;
+  return { start: mid - minSize / 2, end: mid + minSize / 2 };
+}
+
+function updatePointVolumeGeometry(point) {
+  const { world } = point;
+
+  let xInterval;
+  if (state.volumeAxes.x) {
+    const debutYearOnX = mapRange(
+      point.player.debutYear,
+      bounds.calendarYearMin,
+      bounds.calendarYearMax,
+      WORLD.xMax,
+      WORLD.xMin,
+    );
+    xInterval = ensureIntervalSize(debutYearOnX - world.x, 0, 1.5, true);
+  } else {
+    xInterval = ensureIntervalSize(-VOLUME_THICKNESS.x / 2, VOLUME_THICKNESS.x / 2, VOLUME_THICKNESS.x, false);
+  }
+
+  let yInterval;
+  if (state.volumeAxes.y) {
+    yInterval = ensureIntervalSize(0, world.y, 1.8, true);
+  } else {
+    yInterval = ensureIntervalSize(world.y - VOLUME_THICKNESS.y / 2, world.y + VOLUME_THICKNESS.y / 2, VOLUME_THICKNESS.y, false);
+  }
+
+  let zInterval;
+  if (state.volumeAxes.z) {
+    zInterval = ensureIntervalSize(WORLD.zMin - world.z, 0, 1.5, true);
+  } else {
+    zInterval = ensureIntervalSize(-VOLUME_THICKNESS.z / 2, VOLUME_THICKNESS.z / 2, VOLUME_THICKNESS.z, false);
+  }
+
+  const sizeX = Math.max(1, xInterval.end - xInterval.start);
+  const sizeY = Math.max(1, yInterval.end - yInterval.start);
+  const sizeZ = Math.max(1, zInterval.end - zInterval.start);
+  const centerX = (xInterval.start + xInterval.end) / 2;
+  const centerY = (yInterval.start + yInterval.end) / 2;
+  const centerZ = (zInterval.start + zInterval.end) / 2;
+
+  const volumeGeometry = new THREE.BoxGeometry(sizeX, sizeY, sizeZ);
+  point.volume.geometry.dispose();
+  point.volume.geometry = volumeGeometry;
+  point.volume.position.set(centerX, centerY, centerZ);
+
+  point.volumeEdges.geometry.dispose();
+  point.volumeEdges.geometry = new THREE.EdgesGeometry(volumeGeometry);
+  point.volumeEdges.position.copy(point.volume.position);
+}
+
+function refreshAllPointVolumes() {
+  state.points.forEach((point) => {
+    updatePointVolumeGeometry(point);
+  });
+
+  applyVolumeHighlightState();
+}
+
+function resetPointVolumeStyle(point) {
+  point.volume.material.emissiveIntensity = 0.62;
+  point.volumeEdges.material.color.set(point.player.legacy ? 0xffc16b : 0x8aefff);
+}
+
+function applyPointVolumeHoverStyle(point) {
+  point.volume.material.emissiveIntensity = 0.9;
+  point.volumeEdges.material.color.set(point.player.legacy ? 0xffd08e : 0xbaf8ff);
+}
+
+function applyPointVolumeSelectedStyle(point) {
+  point.volume.material.emissiveIntensity = 1.2;
+  point.volumeEdges.material.color.set(0xffffff);
+}
+
+function applyVolumeHighlightState() {
+  state.points.forEach((point) => {
+    resetPointVolumeStyle(point);
+  });
+
+  if (state.hovered && state.hovered !== state.selected) {
+    applyPointVolumeHoverStyle(state.hovered);
+  }
+  if (state.selected) {
+    applyPointVolumeSelectedStyle(state.selected);
+  }
 }
 
 function wireUi() {
@@ -479,17 +788,80 @@ function wireUi() {
       startTour();
     }
   });
+  dom.volumeBtn.addEventListener("click", () => {
+    setVolumeVisibility(!state.volumeVisible);
+  });
+  dom.volumeAxisButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const axis = button.dataset.volumeAxis;
+      if (!axis) return;
+      toggleVolumeAxis(axis);
+    });
+  });
+  dom.searchForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    setSearchQuery(dom.searchInput.value.trim());
+  });
+  dom.searchInput.addEventListener("input", () => {
+    setSearchQuery(dom.searchInput.value);
+  });
+  dom.searchChipClear.addEventListener("click", () => {
+    setSearchQuery("");
+    dom.searchInput.value = "";
+    dom.searchInput.focus();
+  });
 }
 
 function applyFilter(filter) {
   state.filter = filter;
+  dom.filterButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.filter === filter);
+  });
+  refreshPointVisibilityAndHud();
+  updatePointOcclusionVisibility(true);
+}
+
+function isPointAllowedByFilter(point) {
+  return (
+    state.filter === "all" ||
+    (state.filter === "modern" && !point.player.legacy) ||
+    (state.filter === "legacy" && point.player.legacy)
+  );
+}
+
+function pointMatchesSearch(point, query) {
+  if (!query) return true;
+  const q = query.toLowerCase();
+  const p = point.player;
+
+  const haystack = [
+    p.name,
+    p.country,
+    `${p.debutYear}`,
+    `${p.lastYear}`,
+    `${p.debutYear}-${p.lastYear}`,
+    `${p.runs}`,
+    `${Math.round(p.runs / 1000)}k`,
+    `${p.strikeRate.toFixed(2)}`,
+    `${Math.round(p.strikeRate)}`,
+    p.legacy ? "pre-1990" : "1990+",
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return haystack.includes(q);
+}
+
+function refreshPointVisibilityAndHud() {
   let visibleCount = 0;
+  const isolating = Boolean(state.isolatedPoint);
+  const searching = Boolean(state.searchQuery);
 
   state.points.forEach((point) => {
-    const visible =
-      filter === "all" ||
-      (filter === "modern" && !point.player.legacy) ||
-      (filter === "legacy" && point.player.legacy);
+    const byFilter = isPointAllowedByFilter(point);
+    const bySearch = pointMatchesSearch(point, state.searchQuery);
+    const byIsolation = !isolating || point === state.isolatedPoint;
+    const visible = byFilter && bySearch && byIsolation;
     point.group.visible = visible;
     point.labelEl.style.display = visible ? "block" : "none";
     if (visible) visibleCount += 1;
@@ -499,12 +871,212 @@ function applyFilter(filter) {
     selectPoint(null);
   }
 
-  dom.filterButtons.forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.filter === filter);
+  const isolateBadge = isolating ? ` | Isolated: ${state.isolatedPoint.player.name}` : "";
+  const searchBadge = searching ? ` | Search: "${state.searchQuery}"` : "";
+  dom.hudBadge.textContent =
+    `${visibleCount} players visible | Years ${bounds.calendarYearMin + 1}-${bounds.calendarYearMax - 1} | Runs ${Math.round(
+      bounds.runsMin / 1000,
+    )}k-${Math.round(bounds.runsMax / 1000)}k | SR ${bounds.srMin}-${bounds.srMax}${searchBadge}${isolateBadge}`;
+}
+
+function setIsolatedPoint(point) {
+  state.isolatedPoint = point;
+  refreshPointVisibilityAndHud();
+  updatePointOcclusionVisibility(true);
+}
+
+function setSearchQuery(query) {
+  state.searchQuery = query.trim();
+
+  // Search reset clears one-point isolation to avoid conflicting filters.
+  if (state.searchQuery && state.isolatedPoint) {
+    state.isolatedPoint = null;
+  }
+
+  syncSearchUi();
+  refreshPointVisibilityAndHud();
+  updatePointOcclusionVisibility(true);
+}
+
+function syncSearchUi() {
+  const hasSearch = Boolean(state.searchQuery);
+  dom.searchChip.hidden = !hasSearch;
+  if (!hasSearch) return;
+  dom.searchChipText.textContent = `Filtered: ${state.searchQuery}`;
+}
+
+function setVolumeVisibility(enabled) {
+  state.volumeVisible = enabled;
+  syncVolumeSceneVisibility();
+
+  if (enabled) {
+    applyVolumeHighlightState();
+  }
+
+  syncVolumeControlUi();
+  updatePointOcclusionVisibility(true);
+}
+
+function toggleVolumeAxis(axis) {
+  if (!Object.prototype.hasOwnProperty.call(state.volumeAxes, axis)) return;
+  if (state.volumeAxes[axis] && getActiveVolumeAxisCount() === 1) {
+    return;
+  }
+
+  state.volumeAxes[axis] = !state.volumeAxes[axis];
+  refreshAllPointVolumes();
+  syncVolumeSceneVisibility();
+  syncVolumeControlUi();
+  updatePointOcclusionVisibility(true);
+}
+
+function syncVolumeSceneVisibility() {
+  const activeCount = getActiveVolumeAxisCount();
+  const hasActiveAxis = activeCount > 0;
+
+  state.volumeSceneObjects.forEach((entry) => {
+    let visible = state.volumeVisible && hasActiveAxis;
+    if (visible && entry.kind === "cube") {
+      visible = activeCount >= 2;
+    } else if (visible && entry.kind === "slice") {
+      visible = Boolean(state.volumeAxes[entry.axis]);
+    }
+    entry.obj.visible = visible;
   });
 
-  dom.hudBadge.textContent =
-    `${visibleCount} players visible | Debut ${bounds.yearMin + 1}-${bounds.yearMax - 1} | SR ${bounds.srMin}-${bounds.srMax} | Career ${bounds.durationMin}-${bounds.durationMax}y`;
+  state.points.forEach((point) => {
+    point.volume.visible = state.volumeVisible && hasActiveAxis;
+    point.volumeEdges.visible = state.volumeVisible && hasActiveAxis;
+  });
+}
+
+function updatePointOcclusionVisibility(force = false) {
+  const shouldOcclude = state.volumeVisible && getActiveVolumeAxisCount() > 0;
+  const intervalReached = force || state.occlusionCheckAccumulator >= 0.11;
+  if (!intervalReached) return;
+  state.occlusionCheckAccumulator = 0;
+
+  if (!shouldOcclude) {
+    state.points.forEach((point) => {
+      const visible = point.group.visible;
+      point.orb.visible = visible;
+      point.labelEl.style.display = visible ? "block" : "none";
+    });
+    return;
+  }
+
+  const visibleVolumes = state.points
+    .filter((point) => point.group.visible && point.volume.visible)
+    .map((point) => point.volume);
+
+  if (!visibleVolumes.length) {
+    state.points.forEach((point) => {
+      const visible = point.group.visible;
+      point.orb.visible = visible;
+      point.labelEl.style.display = visible ? "block" : "none";
+    });
+    return;
+  }
+
+  camera.getWorldPosition(cameraWorldPos);
+  for (const point of state.points) {
+    if (!point.group.visible) {
+      point.orb.visible = false;
+      point.labelEl.style.display = "none";
+      continue;
+    }
+
+    point.orb.getWorldPosition(pointWorldPos);
+    rayDirection.copy(pointWorldPos).sub(cameraWorldPos);
+    const distanceToPoint = rayDirection.length();
+
+    if (distanceToPoint < 1e-3) {
+      point.orb.visible = true;
+      point.labelEl.style.display = "block";
+      continue;
+    }
+
+    rayDirection.multiplyScalar(1 / distanceToPoint);
+    occlusionRaycaster.set(cameraWorldPos, rayDirection);
+    occlusionRaycaster.near = 0.1;
+    occlusionRaycaster.far = Math.max(0.1, distanceToPoint - 0.25);
+
+    const blocked = occlusionRaycaster.intersectObjects(visibleVolumes, false).length > 0;
+    point.orb.visible = !blocked;
+    point.labelEl.style.display = blocked ? "none" : "block";
+  }
+
+  // Extra front-surface culling so interior/overlapped points do not show in volume mode.
+  applyFrontSurfaceCulling();
+}
+
+function applyFrontSurfaceCulling() {
+  const width = renderer.domElement.clientWidth || window.innerWidth;
+  const height = renderer.domElement.clientHeight || window.innerHeight;
+  const cellSize = 34;
+  const candidates = [];
+
+  camera.getWorldPosition(cameraWorldPos);
+
+  for (const point of state.points) {
+    if (!point.group.visible || !point.orb.visible) continue;
+
+    point.orb.getWorldPosition(pointWorldPos);
+    projectedPoint.copy(pointWorldPos).project(camera);
+    if (projectedPoint.z < -1 || projectedPoint.z > 1) {
+      point.orb.visible = false;
+      point.labelEl.style.display = "none";
+      continue;
+    }
+
+    const sx = (projectedPoint.x * 0.5 + 0.5) * width;
+    const sy = (-projectedPoint.y * 0.5 + 0.5) * height;
+    const dist2 = cameraWorldPos.distanceToSquared(pointWorldPos);
+    candidates.push({ point, sx, sy, dist2 });
+  }
+
+  candidates.sort((a, b) => a.dist2 - b.dist2);
+  const occupied = new Set();
+
+  for (const item of candidates) {
+    const gx = Math.floor(item.sx / cellSize);
+    const gy = Math.floor(item.sy / cellSize);
+    const isPriority = item.point === state.selected || item.point === state.hovered;
+
+    let blockedByFront = false;
+    for (let dx = -1; dx <= 1; dx += 1) {
+      for (let dy = -1; dy <= 1; dy += 1) {
+        if (occupied.has(`${gx + dx},${gy + dy}`)) {
+          blockedByFront = true;
+          break;
+        }
+      }
+      if (blockedByFront) break;
+    }
+
+    if (blockedByFront && !isPriority) {
+      item.point.orb.visible = false;
+      item.point.labelEl.style.display = "none";
+      continue;
+    }
+
+    occupied.add(`${gx},${gy}`);
+  }
+}
+
+function syncVolumeControlUi() {
+  const axes = getActiveVolumeAxisLabels();
+  const axisDisplay = axes.join("+");
+  dom.volumeBtn.textContent = state.volumeVisible ? `Volume On (${axisDisplay})` : "Volume Off";
+  dom.volumeBtn.classList.toggle("is-active", state.volumeVisible);
+
+  dom.volumeAxisButtons.forEach((button) => {
+    const axis = button.dataset.volumeAxis;
+    const isActiveAxis = Boolean(axis && state.volumeAxes[axis]);
+    button.classList.toggle("is-active", isActiveAxis);
+    button.disabled = !state.volumeVisible;
+    button.style.opacity = state.volumeVisible ? "1" : "0.45";
+  });
 }
 
 function onPointerMove(event) {
@@ -522,7 +1094,38 @@ function onPointerLeave() {
 
 function onPointerClick() {
   stopTour();
+  if (state.singleClickTimer) {
+    window.clearTimeout(state.singleClickTimer);
+    state.singleClickTimer = null;
+  }
+
+  const clickedPoint = state.hovered;
+  state.singleClickTimer = window.setTimeout(() => {
+    state.singleClickTimer = null;
+
+    if (!clickedPoint) {
+      setIsolatedPoint(null);
+      return;
+    }
+
+    selectPoint(clickedPoint, { focus: false });
+    if (state.isolatedPoint === clickedPoint) {
+      setIsolatedPoint(null);
+    } else {
+      setIsolatedPoint(clickedPoint);
+    }
+  }, 220);
+}
+
+function onPointerDoubleClick() {
+  stopTour();
+  if (state.singleClickTimer) {
+    window.clearTimeout(state.singleClickTimer);
+    state.singleClickTimer = null;
+  }
   if (!state.hovered) return;
+
+  setIsolatedPoint(null);
   selectPoint(state.hovered, { focus: true });
 }
 
@@ -546,6 +1149,7 @@ function setHoveredPoint(point, clientX, clientY) {
   if (state.hovered && state.hovered !== state.selected) {
     state.hovered.orb.material.emissiveIntensity = 1.05;
     state.hovered.orb.scale.setScalar(1);
+    resetPointVolumeStyle(state.hovered);
   }
 
   state.hovered = point;
@@ -558,8 +1162,9 @@ function setHoveredPoint(point, clientX, clientY) {
   if (point !== state.selected) {
     point.orb.material.emissiveIntensity = 1.65;
     point.orb.scale.setScalar(1.2);
+    applyPointVolumeHoverStyle(point);
   }
-  dom.hoverTag.textContent = `${point.player.name} | SR ${point.player.strikeRate.toFixed(2)} | Career ${point.player.careerDurationYears}y`;
+  dom.hoverTag.textContent = `${point.player.name} | SR ${point.player.strikeRate.toFixed(2)} | Career ${point.player.debutYear}-${point.player.lastYear}`;
   dom.hoverTag.hidden = false;
   positionHoverTag(clientX, clientY);
 }
@@ -573,6 +1178,7 @@ function positionHoverTag(clientX, clientY) {
 function selectPoint(point, options = { focus: false }) {
   if (state.selected && state.selected !== point) {
     state.selected.orb.material.emissiveIntensity = 1.05;
+    resetPointVolumeStyle(state.selected);
   }
   state.selected = point;
 
@@ -587,11 +1193,12 @@ function selectPoint(point, options = { focus: false }) {
   }
 
   point.orb.material.emissiveIntensity = 2.15;
+  applyPointVolumeSelectedStyle(point);
   dom.playerName.textContent = point.player.name;
   dom.playerSummary.textContent = `${point.player.country || "Test Player"} | ${point.player.runs.toLocaleString()} runs`;
   dom.statDebut.textContent = `${point.player.debutYear}-${point.player.lastYear}`;
   dom.statSR.textContent = point.player.strikeRate.toFixed(2);
-  dom.statCareer.textContent = `${point.player.careerDurationYears} years`;
+  dom.statCareer.textContent = `${point.player.debutYear}-${point.player.lastYear} (${point.player.careerDurationYears} years)`;
   dom.statEra.textContent = point.player.legacy ? "Pre-1990 (incomplete SR era)" : "1990+";
 
   if (options.focus) {
@@ -708,6 +1315,7 @@ function updateKeyboardNavigation(deltaSeconds) {
 function animate() {
   const elapsed = performance.now() * 0.001;
   const delta = clock.getDelta();
+  state.occlusionCheckAccumulator += delta;
 
   updateKeyboardNavigation(delta);
 
@@ -724,6 +1332,7 @@ function animate() {
   });
 
   controls.update();
+  updatePointOcclusionVisibility(false);
   composer.render();
   labelRenderer.render(scene, camera);
   requestAnimationFrame(animate);

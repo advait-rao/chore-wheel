@@ -19,13 +19,40 @@
     <div class="title-wrap">
       <p class="kicker">Immersive Analytics Arena</p>
       <h1>Test Cricket 6000+ Run Club</h1>
-      <p class="subtitle">X: Debut Year, Y: Strike Rate, Z: Career Duration (last year - debut year). Pre-1990 points are marked as incomplete SR-era data.</p>
+      <p class="subtitle">X: Years Active (debut to last Test year), Y: Runs, Z: Strike Rate. Career length is shown directly as start-to-end span on one year axis.</p>
     </div>
     <div class="controls">
       <button class="hud-btn is-active" data-filter="all" type="button">All</button>
       <button class="hud-btn" data-filter="modern" type="button">1990+</button>
       <button class="hud-btn" data-filter="legacy" type="button">Pre-1990</button>
+      <button class="hud-btn is-active" id="volumeBtn" type="button">Volume On</button>
+      <button class="hud-btn hud-btn-axis is-active" data-volume-axis="x" type="button">X</button>
+      <button class="hud-btn hud-btn-axis" data-volume-axis="y" type="button">Y</button>
+      <button class="hud-btn hud-btn-axis" data-volume-axis="z" type="button">Z</button>
       <button class="hud-btn hud-btn-tour" id="tourBtn" type="button">Start Tour</button>
+      <div class="search-zone">
+        <form class="search-form" id="searchForm" role="search">
+          <div class="search-shell">
+            <input
+              id="searchInput"
+              class="search-input"
+              type="search"
+              placeholder="Search"
+              autocomplete="off"
+            />
+            <button class="search-icon-btn" id="searchIconBtn" type="submit" aria-label="Search">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.2"></circle>
+                <line x1="15.8" y1="15.8" x2="21" y2="21"></line>
+              </svg>
+            </button>
+          </div>
+        </form>
+        <div class="search-chip" id="searchChip" hidden>
+          <span class="search-chip-text" id="searchChipText"></span>
+          <button class="search-chip-clear" id="searchChipClear" type="button" aria-label="Remove search filter">x</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -39,7 +66,7 @@
       <div><dt>Career Span</dt><dd id="statCareer">-</dd></div>
       <div><dt>Era Flag</dt><dd id="statEra">-</dd></div>
     </dl>
-    <p class="panel-note">Keyboard: W/A/S/D to strafe, Q/E to rise/drop, drag to orbit, scroll to zoom.</p>
+    <p class="panel-note">Click a point to isolate that player. Double-click to jump to player focus. Keyboard: W/A/S/D to strafe, Q/E to rise/drop, drag to orbit, scroll to zoom.</p>
   </aside>
 
   <div class="hud hud-badge" id="hudBadge">Loading dataset...</div>
